@@ -4,6 +4,8 @@ import './Calculator.css'
 import Button from '../components/Button'
 import Display from '../components/Display'
 
+import { evaluate } from 'mathjs'
+
 const initialState = {
     displayValue: '0',
     clearDisplay: false,
@@ -37,7 +39,7 @@ export default class Calculator extends Component {
 
             const values = [...this.state.values]
             try {
-                values[0] = eval(`${values[0]} ${currentOperation} ${values[1]}`)
+                values[0] = evaluate(`${values[0]} ${currentOperation} ${values[1]}`)
                 if (isNaN(values[0]) || !isFinite(values[0])) {
                     this.clearMemory() 
                    return 
@@ -63,8 +65,7 @@ export default class Calculator extends Component {
             return
         }
 
-        const clearDisplay = this.state.displayValue === '0'
-            || this.state.clearDisplay
+        const clearDisplay = this.state.displayValue === '0' || this.state.clearDisplay
         const currentValue = clearDisplay ? '' : this.state.displayValue
         const displayValue = currentValue + n
         this.setState({ displayValue, clearDisplay: false })
